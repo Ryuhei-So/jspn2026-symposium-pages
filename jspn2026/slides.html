@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>精神科医療における交通整理 | JSPN 2026</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5b6578;
+      --line: #d7dce5;
+      --bg: #f5f7fa;
+      --paper: #ffffff;
+      --red: #c84646;
+      --blue: #276fa8;
+      --green: #2f7d5c;
+      --amber: #b7741e;
+      --violet: #5f5a9c;
+      --gray: #475062;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Yu Gothic UI", Meiryo, sans-serif;
+    }
+
+    body {
+      overflow: hidden;
+    }
+
+    .deck {
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+      padding: 5.1vh 5.8vw 5.5vh;
+      background: var(--paper);
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide.active {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 2.2vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1.45vh;
+    }
+
+    .kicker {
+      color: var(--muted);
+      font-size: 1.35vw;
+      letter-spacing: 0;
+      margin: 0 0 0.45vh;
+      font-weight: 700;
+    }
+
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 3.8vw;
+      line-height: 1.15;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 2.9vw;
+      line-height: 1.18;
+      font-weight: 740;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 1.55vw;
+      line-height: 1.3;
+      font-weight: 720;
+    }
+
+    .body {
+      min-height: 0;
+      display: grid;
+      align-content: center;
+      gap: 2.1vh;
+    }
+
+    .two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vw;
+      align-items: stretch;
+    }
+
+    .two.wide-left {
+      grid-template-columns: 1.14fr 0.86fr;
+    }
+
+    .three {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.35vw;
+      align-items: stretch;
+    }
+
+    .four {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1vw;
+      align-items: stretch;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.45vw;
+      background: #fff;
+      min-height: 0;
+    }
+
+    .card.red { border-top: 7px solid var(--red); }
+    .card.blue { border-top: 7px solid var(--blue); }
+    .card.green { border-top: 7px solid var(--green); }
+    .card.amber { border-top: 7px solid var(--amber); }
+    .card.violet { border-top: 7px solid var(--violet); }
+
+    .big-number {
+      display: block;
+      font-size: 4.1vw;
+      line-height: 1;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 0.8vh;
+      letter-spacing: 0;
+    }
+
+    .big-number.red { color: var(--red); }
+    .big-number.green { color: var(--green); }
+    .big-number.amber { color: var(--amber); }
+
+    ul {
+      margin: 1.1vh 0 0;
+      padding-left: 1.3em;
+      font-size: 1.45vw;
+      line-height: 1.55;
+    }
+
+    li + li {
+      margin-top: 0.65vh;
+    }
+
+    .lead {
+      font-size: 2.15vw;
+      line-height: 1.48;
+      font-weight: 650;
+    }
+
+    .text {
+      font-size: 1.45vw;
+      line-height: 1.55;
+    }
+
+    .small {
+      font-size: 1.02vw;
+      line-height: 1.42;
+      color: var(--muted);
+    }
+
+    .quote {
+      border-left: 0.42vw solid var(--blue);
+      padding: 1.1vw 1.4vw;
+      font-size: 1.75vw;
+      line-height: 1.55;
+      background: #f7faff;
+      font-weight: 650;
+    }
+
+    .anti {
+      border: 1px solid #e8c8c8;
+      border-left: 0.42vw solid var(--red);
+      background: #fff8f8;
+      padding: 1.1vw 1.25vw;
+      font-size: 1.23vw;
+      line-height: 1.55;
+    }
+
+    .tagline {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.2vw;
+      padding: 0.36vw 0.72vw;
+      border-radius: 999px;
+      background: #eef2f7;
+      color: var(--gray);
+      font-size: 1vw;
+      font-weight: 760;
+      margin-right: 0.4vw;
+      margin-bottom: 0.45vh;
+      white-space: nowrap;
+    }
+
+    .axis {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1vw;
+      align-items: center;
+    }
+
+    .axis .side {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.6vw;
+      min-height: 23vh;
+    }
+
+    .axis .arrow {
+      font-size: 4vw;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .matrix {
+      display: grid;
+      grid-template-columns: 0.95fr 1.15fr 1.15fr 1.25fr;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 1.08vw;
+      line-height: 1.42;
+    }
+
+    .matrix > div {
+      padding: 0.72vw;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      min-height: 8.5vh;
+    }
+
+    .matrix > div:nth-child(4n) { border-right: 0; }
+    .matrix > div:nth-last-child(-n+4) { border-bottom: 0; }
+    .matrix .head {
+      font-weight: 800;
+      background: #eef2f7;
+      min-height: auto;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1.15fr;
+      gap: 1.2vw;
+      align-items: center;
+    }
+
+    .flow-col {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.1vw;
+      min-height: 49vh;
+    }
+
+    .hub {
+      border: 3px solid var(--blue);
+      border-radius: 8px;
+      padding: 1.4vw;
+      min-height: 49vh;
+      display: grid;
+      align-content: center;
+      background: #f8fbff;
+    }
+
+    .lane {
+      border-left: 0.55vw solid var(--gray);
+      padding: 0.78vw 0.9vw;
+      margin-bottom: 0.72vh;
+      background: #fafbfc;
+      border-radius: 6px;
+      font-size: 1.08vw;
+      line-height: 1.35;
+    }
+
+    .lane.red { border-left-color: var(--red); }
+    .lane.blue { border-left-color: var(--blue); }
+    .lane.green { border-left-color: var(--green); }
+    .lane.amber { border-left-color: var(--amber); }
+
+    .figure {
+      width: 100%;
+      max-height: 67vh;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1vw;
+      color: var(--muted);
+      font-size: 0.92vw;
+      border-top: 1px solid var(--line);
+      padding-top: 1vh;
+    }
+
+    .progress {
+      height: 0.35vh;
+      background: var(--blue);
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      z-index: 10;
+      transition: width 120ms ease-out;
+    }
+
+    .print-note {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      body { overflow: auto; }
+      .deck { height: auto; }
+      .slide, .slide.active {
+        position: relative;
+        display: grid;
+        min-height: 100vh;
+        height: auto;
+      }
+      .slide:not(.active) { display: none; }
+      h1 { font-size: 10vw; }
+      h2 { font-size: 7.6vw; }
+      h3 { font-size: 4.6vw; }
+      .lead { font-size: 5.2vw; }
+      .text, ul { font-size: 4vw; }
+      .small, .footer { font-size: 2.9vw; }
+      .two, .two.wide-left, .three, .four, .flow, .axis {
+        grid-template-columns: 1fr;
+      }
+      .axis .arrow { display: none; }
+      .matrix { font-size: 2.8vw; }
+    }
+
+    @media print {
+      body { overflow: visible; background: #fff; }
+      .deck { height: auto; }
+      .slide, .slide.active {
+        display: grid !important;
+        position: relative;
+        page-break-after: always;
+        width: 100vw;
+        height: 100vh;
+      }
+      .progress { display: none; }
+      .print-note { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <main class="deck" id="deck">
+    <section class="slide active">
+      <header>
+        <p class="kicker">第122回日本精神神経学会学術総会 シンポ46</p>
+        <h1>精神科医療における交通整理</h1>
+      </header>
+      <div class="body">
+        <p class="lead">「患者が増えた」ことを、専門医外来枠の不足だけで説明しない。啓発、診断、制度、一般診療、職場、学校、DTx/AI が作る交通量を、重症度と機能障害に応じて受け止め直す。</p>
+        <div>
+          <span class="tagline">受診抑制ではない</span>
+          <span class="tagline">一律拡大でもない</span>
+          <span class="tagline">health services design</span>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>宋 龍平 | 2026 JSPN draft</span>
+        <span>Use arrows / space to navigate</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Anti-pattern</p>
+        <h2>避けるべき発表の型</h2>
+      </header>
+      <div class="body two wide-left">
+        <div class="anti">
+          結論から言って、今回読んだ文章は、論文とは言い難いものでした。複数の理由から、おそらく生成AIの出力結果をそのまま提出されている、ないし、論考の大部分を生成AIの出力結果が占めている文章であると考えられます。<br><br>
+          第一に、この文章には、論の根拠が存在しません。<br>
+          第二に、書かれている内容の中に間違いが多数あります。<br>
+          第三に、論理が展開しているようでまったく展開していません。同じようなことを表現や水準を変えて何度も書き続けられているだけで、議論が深まっていきません。<br>
+          第四に、参考・引用文献リストに挙げられている論考が、本文に一つも紐づいていません。
+        </div>
+        <div class="card blue">
+          <h3>このスライド群の作法</h3>
+          <ul>
+            <li>各主張に、統計・臨床研究・制度データを対応させる。</li>
+            <li>「医療化」批判を抽象論に置かず、受け皿設計へ落とす。</li>
+            <li>依存症/DTxは避けない。自分が交通量を作った側として扱う。</li>
+            <li>文献は羅列せず、どの判断に効くかを明示する。</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Design constraint</span>
+        <span>根拠なし・誤り・同語反復・文献羅列を避ける</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Thesis</p>
+        <h2>受け皿問題は「精神疾患概念の是非」ではない</h2>
+      </header>
+      <div class="body">
+        <p class="quote">重症度、リスク、機能障害、本人希望、社会的課題に応じて、専門医療、一般医療、地域支援、産業保健、デジタル支援を段階的に接続する health services design の問題である。</p>
+        <div class="three">
+          <div class="card red">
+            <h3>混雑は現実</h3>
+            <p class="text">精神疾患患者は数百万規模。外来、救急、地域移行、児童思春期で別々の詰まりがある。</p>
+          </div>
+          <div class="card amber">
+            <h3>需要は作られる</h3>
+            <p class="text">啓発、診療報酬、スクリーニング、学校教育、DTx/AI は受診意図と利用を動かす。</p>
+          </div>
+          <div class="card green">
+            <h3>未治療も残る</h3>
+            <p class="text">治療ギャップは大きく、単に「医療化を控える」だけでは必要な治療に届かない。</p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Core thesis</span>
+        <span>医療化批判と治療ギャップ是正を同じ設計図に置く</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Data 1</p>
+        <h2>交通量は数百万規模である</h2>
+      </header>
+      <div class="body two">
+        <div class="card blue">
+          <span class="big-number">489.6万人</span>
+          <h3>精神及び行動の障害の総患者数</h3>
+          <p class="text">令和5年患者調査、傷病分類別総患者数。男214.9万人、女274.7万人。</p>
+          <p class="small">出典: 厚生労働省 令和5年患者調査 表7。総患者数算出方法の違いにより、令和6年版白書の2020年値と単純比較しない。</p>
+        </div>
+        <div class="card amber">
+          <span class="big-number amber">数値の扱い</span>
+          <h3>「増えた」だけでは議論にならない</h3>
+          <ul>
+            <li>外来患者数増加は事実として提示する。</li>
+            <li>増加分をすべて「真の unmet need」とは読まない。</li>
+            <li>患者調査、NDB、救急、地域移行を分けて見る。</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>MHLW Patient Survey 2023; MHLW White Paper 2024</span>
+        <span>交通量の総量と流路を分ける</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Data 2</p>
+        <h2>日本の入口は、直接精神科と一般医療経由が併走している</h2>
+      </header>
+      <div class="body three">
+        <div class="card blue">
+          <span class="big-number">39.4%</span>
+          <h3>直接メンタルヘルス専門職へ</h3>
+          <p class="text">紹介制度だけで入口を設計しても、日本の現実を取りこぼす。</p>
+        </div>
+        <div class="card green">
+          <span class="big-number green">38.1%</span>
+          <h3>一般病院経由</h3>
+          <p class="text">身体科・一般病院は精神科医療への主要な入口である。</p>
+        </div>
+        <div class="card amber">
+          <span class="big-number amber">15.5%</span>
+          <h3>開業医経由</h3>
+          <p class="text">プライマリケア、身体疾患診療、かかりつけ関係を交通整理に組み込む必要がある。</p>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Fujisawa et al. Pathway to psychiatric care in Japan. PMID: 18822134</span>
+        <span>紹介状ではなく流路設計</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Conflict</p>
+        <h2>啓発は必要だが、交通量も作る</h2>
+      </header>
+      <div class="body axis">
+        <div class="side">
+          <h3>治療ギャップ是正</h3>
+          <ul>
+            <li>病識・援助要請を促す。</li>
+            <li>スティグマを下げる。</li>
+            <li>重症例を早く拾う。</li>
+            <li>一般診療・学校・職場から接続する。</li>
+          </ul>
+        </div>
+        <div class="arrow">↔</div>
+        <div class="side">
+          <h3>過剰流入・副作用</h3>
+          <ul>
+            <li>一過性の苦痛を疾患語で読む。</li>
+            <li>自己診断とラベル消費を増やす。</li>
+            <li>普遍的介入が一部で有害化する。</li>
+            <li>専門外来の待機を延ばす。</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Foulkes & Andrews 2023; Foulkes & Stringaris 2023; 小池・伊藤 2012</span>
+        <span>啓発批判ではなく、啓発後の受け皿設計</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Concrete Japan Example</p>
+        <h2>職場ストレスは、診断だけで受けると個人化される</h2>
+      </header>
+      <div class="body two">
+        <div class="card red">
+          <span class="big-number red">2.5倍</span>
+          <h3>適応障害総患者数</h3>
+          <p class="text">2008年41千人から2017年101千人へ。職場不適応や社会的苦痛が精神科診断へ翻訳されている可能性がある。</p>
+          <p class="small">出典: 日本における「適応障害」患者数の増加. 社会政策, 2020.</p>
+        </div>
+        <div class="card green">
+          <h3>受け皿は外来だけではない</h3>
+          <ul>
+            <li>疾病性: 診断、治療、休職、薬物療法。</li>
+            <li>事例性: 職場で何が起き、何を調整するか。</li>
+            <li>産業保健: 参加型職場環境改善、職場での対話、アジャイルな修正。</li>
+          </ul>
+          <p class="small">出典: 産業衛生学雑誌 2023; 吉川 2024.</p>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>社会問題を医療に押し込めず、医療を制度接続の入口として使う</span>
+        <span>個人病理化を避ける</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Self-including Case</p>
+        <h2>依存症: 私自身も交通量を作ってきた</h2>
+      </header>
+      <div class="body two">
+        <div class="card blue">
+          <h3>なぜ入口を広げたか</h3>
+          <ul>
+            <li>依存症の治療ギャップは大きい。</li>
+            <li>専門外来に来ない人は、一般診療・身体疾患診療に存在する。</li>
+            <li>非難から治療可能な責任へ移す必要がある。</li>
+          </ul>
+        </div>
+        <div class="card amber">
+          <h3>それでも免罪ではない</h3>
+          <ul>
+            <li>啓発は対象者を増やす。</li>
+            <li>スクリーニングだけでは有効治療に届かない。</li>
+            <li>DTxは供給を増やすが、step-upと継続支援なしでは漏れる。</li>
+            <li>COIと自己批判を明示する。</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>So et al. 2024; So et al. BMJ 2025; So et al. PCN 2025; Vigo et al. 2025</span>
+        <span>避けない。中心例として扱う。</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Clinical Evidence</p>
+        <h2>「入口を広げる」だけでは足りない</h2>
+      </header>
+      <div class="body three">
+        <div class="card blue">
+          <span class="big-number">22%</span>
+          <h3>日本プライマリケアでAUDIT ≥8</h3>
+          <p class="text">18施設、1,388名。危険飲酒または依存疑いは一般診療にいる。</p>
+        </div>
+        <div class="card amber">
+          <span class="big-number amber">非優越</span>
+          <h3>超短時間介入</h3>
+          <p class="text">日本プライマリケアで、簡易評価のみと比べて優越性を示せなかった。</p>
+        </div>
+        <div class="card green">
+          <span class="big-number green">-2.79日</span>
+          <h3>DTx RCT</h3>
+          <p class="text">12週時点のheavy drinking days差。デジタル支援は機能しうるが、実装設計が要る。</p>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>So et al. General Hospital Psychiatry 2024; BMJ 2025; Psychiatry Clin Neurosci 2025</span>
+        <span>screening → treatment → effective treatment のカスケード</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Receiving System</p>
+        <h2>4レーンで受ける</h2>
+      </header>
+      <div class="body">
+        <div class="matrix">
+          <div class="head">レーン</div>
+          <div class="head">主なニーズ</div>
+          <div class="head">誤配のリスク</div>
+          <div class="head">受け皿</div>
+          <div>危機・重症</div>
+          <div>自殺リスク、精神病症状、躁状態、重度依存、身体合併症</div>
+          <div>待機、断絶、軽症外来への滞留</div>
+          <div>救急、専門医療、入院、訪問、ケースマネジメント</div>
+          <div>中等症</div>
+          <div>うつ、不安、依存症の標準治療、継続支援</div>
+          <div>短時間頻回外来だけで抱える</div>
+          <div>協働ケア、測定ベース治療、step-up / step-down</div>
+          <div>生活・職場課題</div>
+          <div>休職、復職、職場調整、家庭・経済問題</div>
+          <div>社会的問題の個人病理化</div>
+          <div>産業保健、地域支援、SW、環境調整</div>
+          <div>グレーゾーン</div>
+          <div>セルフチェック、早期相談、未確定の困りごと</div>
+          <div>ラベル消費、過剰自己診断、DTx依存</div>
+          <div>プライマリケア、DTx/AI、共同照合、必要時step-up</div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Matched / stepped / collaborative care と日本の受け皿を接続する</span>
+        <span>診断名より流路</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Visual Model</p>
+        <h2>交通整理は「共同照合・初期評価」を中心に置く</h2>
+      </header>
+      <div class="body">
+        <img class="figure" src="traffic_receiving_system_2026-06-05.png" alt="精神科医療の交通整理図">
+      </div>
+      <footer class="footer">
+        <span>Generated draft visual, 2026-06-05</span>
+        <span>NDB・患者調査・現場データで再設計</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Implementation</p>
+        <h2>協働ケアは「紹介状を送る」ことではない</h2>
+      </header>
+      <div class="body flow">
+        <div class="flow-col">
+          <h3>Primary care / general hospital</h3>
+          <ul>
+            <li>初期評価</li>
+            <li>身体疾患・生活文脈の把握</li>
+            <li>低〜中等度ケースの継続接点</li>
+          </ul>
+        </div>
+        <div class="hub">
+          <h3>Care manager + measurement</h3>
+          <ul>
+            <li>症状・機能の定期測定</li>
+            <li>継続率と副作用の確認</li>
+            <li>治療計画の調整</li>
+          </ul>
+        </div>
+        <div class="flow-col">
+          <h3>Psychiatric supervision</h3>
+          <ul>
+            <li>診断・リスクの再評価</li>
+            <li>薬物療法・心理社会的治療の助言</li>
+            <li>必要時の専門医療へのstep-up</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Katon et al. 1999; Unutzer et al. 2002; Thota et al. 2012; Schillok et al. 2025</span>
+        <span>collaborative care は構造である</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">High-acuity Lane</p>
+        <h2>救急と地域移行を外すと、受け皿論は軽くなる</h2>
+      </header>
+      <div class="body two">
+        <div class="card red">
+          <h3>精神科救急</h3>
+          <ul>
+            <li>地域の精神科医療資源偏在がある。</li>
+            <li>措置入院制度の運用に地域差がある。</li>
+            <li>精神疾患は五大疾病だが、行政・臨床対応を揃える疫学的エビデンスが不足しやすい。</li>
+          </ul>
+        </div>
+        <div class="card green">
+          <h3>退院支援・地域定着</h3>
+          <ul>
+            <li>精神科救急病棟ではSW介入が退院・経済・心理社会的問題に対応する。</li>
+            <li>長期入院と地域サービス不足は出口の渋滞である。</li>
+            <li>入口だけ増やすと、院内と地域で詰まる。</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>日本公衆衛生雑誌 2019; 堀内ほか 2008; ファルマシア 2015</span>
+        <span>軽症外来だけの話にしない</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Evaluation</p>
+        <h2>アウトカムで交通整理を評価する</h2>
+      </header>
+      <div class="body four">
+        <div class="card blue">
+          <h3>到達</h3>
+          <ul>
+            <li>初回接触</li>
+            <li>治療開始</li>
+            <li>有効治療到達</li>
+          </ul>
+        </div>
+        <div class="card green">
+          <h3>継続</h3>
+          <ul>
+            <li>中断率</li>
+            <li>再診間隔</li>
+            <li>step-up率</li>
+          </ul>
+        </div>
+        <div class="card amber">
+          <h3>安全</h3>
+          <ul>
+            <li>自殺・救急</li>
+            <li>再入院</li>
+            <li>過剰診断・過剰治療</li>
+          </ul>
+        </div>
+        <div class="card violet">
+          <h3>生活</h3>
+          <ul>
+            <li>機能回復</li>
+            <li>復職・就学</li>
+            <li>患者報告アウトカム</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>NDBは診療行為データ約98%をカバー。精神科NDB研究はまだ少ない。</span>
+        <span>Yasunaga 2024</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Conclusion</p>
+        <h2>医療化を止揚するとは、診断を捨てることではない</h2>
+      </header>
+      <div class="body">
+        <div class="quote">診断名を入口の通行証にしすぎず、しかし苦痛を制度につなげる翻訳機能は保持する。必要なのは「診断か非診断か」ではなく、可逆的・段階的・共同的な支援導線である。</div>
+        <div class="three">
+          <div class="card red">
+            <h3>重症例を待たせない</h3>
+            <p class="text">危機・重症レーンを明確化し、専門医療を守る。</p>
+          </div>
+          <div class="card blue">
+            <h3>中等症を抱え込まない</h3>
+            <p class="text">協働ケア、測定、step-upで一般医療と接続する。</p>
+          </div>
+          <div class="card green">
+            <h3>社会的苦痛を個人化しない</h3>
+            <p class="text">産業保健、地域支援、DTx/AIを医療の外側と結ぶ。</p>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Final message</span>
+        <span>受け皿を増やす前に、何を受け取っているのかを分ける</span>
+      </footer>
+    </section>
+
+    <section class="slide">
+      <header>
+        <p class="kicker">Key References</p>
+        <h2>スライドで直接使う文献</h2>
+      </header>
+      <div class="body two">
+        <div class="card">
+          <h3>データ・医療システム</h3>
+          <ul>
+            <li>厚生労働省. 令和5年患者調査; 令和6年版厚生労働白書.</li>
+            <li>Fujisawa et al. Pathway to psychiatric care in Japan. PMID: 18822134.</li>
+            <li>Yasunaga H. Updated Information on NDB. Ann Clin Epidemiol. 2024.</li>
+            <li>日本公衆衛生学会. 精神科救急医療体制の現状と課題. 2019.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>介入・受け皿</h3>
+          <ul>
+            <li>Katon et al. Stepped collaborative care. PMID: 10591288.</li>
+            <li>Unutzer et al. IMPACT trial. PMID: 12472325.</li>
+            <li>Thota et al. Collaborative care meta-analysis. PMID: 22516495.</li>
+            <li>So et al. Gen Hosp Psychiatry 2024; BMJ 2025; PCN 2025.</li>
+          </ul>
+        </div>
+      </div>
+      <footer class="footer">
+        <span>Full evidence bank: evidence_bank_2026-06-05.md</span>
+        <span class="print-note">Print mode enabled</span>
+      </footer>
+    </section>
+  </main>
+  <div class="progress" id="progress"></div>
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const progress = document.getElementById("progress");
+    let current = 0;
+
+    function show(index) {
+      current = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
+      progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+      window.location.hash = String(current + 1).padStart(2, "0");
+    }
+
+    function fromHash() {
+      const n = parseInt(window.location.hash.replace("#", ""), 10);
+      if (!Number.isNaN(n)) show(n - 1);
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        show(current + 1);
+      }
+      if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) {
+        event.preventDefault();
+        show(current - 1);
+      }
+      if (event.key === "Home") show(0);
+      if (event.key === "End") show(slides.length - 1);
+    });
+
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+    show(current);
+  </script>
+</body>
+</html>
